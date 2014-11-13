@@ -1,0 +1,35 @@
+{
+    "name": "pgopenssltypes",
+    "abstract": "A short description",
+    "description": "A long description",
+    "version": "0.0.1",
+    "maintainer": "The maintainer's name",
+    "license": "postgresql",
+    "provides": {
+        "pgopenssltypes": {
+            "abstract": "A short description",
+            "file": "sql/pgopenssltypes.sql",
+            "docfile": "doc/pgopenssltypes.md",
+            "version": "0.0.1"
+        }
+    },
+    "release_status": "unstable",
+    "resources": {
+        "bugtracker": {
+            "web": "http://change.me"
+        },
+        "repository": {
+          "url":  "git://beargiles/pgopenssltypes.git",
+          "web":  "http://beargiles/pgopenssltypes",
+          "type": "git"
+        }
+    },
+
+    "generated_by": "Bear Giles",
+
+
+    "meta-spec": {
+        "version": "1.0.0",
+        "url": "http://pgxn.org/meta/spec.txt"
+    }
+}
