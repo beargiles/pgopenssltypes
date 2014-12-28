@@ -2,6 +2,8 @@
 #ifndef pgopenssltypes_h
 #define pgopenssltypes_h
 
+#include <openssl/bn.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -18,41 +20,38 @@ Datum dgst_sha512(PG_FUNCTION_ARGS);
 Datum dgst_ripemd160(PG_FUNCTION_ARGS);
 Datum dgst_whirlpool(PG_FUNCTION_ARGS);
 
+// big numbers
+Datum bn_in(PG_FUNCTION_ARGS);
+Datum bn_out(PG_FUNCTION_ARGS);
+
+Datum BnGetDatum(BIGNUM *bn);
+
 // private keypairs
 Datum pkey_in(PG_FUNCTION_ARGS);
 Datum pkey_out(PG_FUNCTION_ARGS);
-Datum pkey_receive(PG_FUNCTION_ARGS);
-Datum pkey_send(PG_FUNCTION_ARGS);
 
 // RSA keypairs
 Datum rsa_in(PG_FUNCTION_ARGS);
 Datum rsa_out(PG_FUNCTION_ARGS);
-Datum rsa_receive(PG_FUNCTION_ARGS);
-Datum rsa_send(PG_FUNCTION_ARGS);
+
+Datum rsa_generate_keypair(PG_FUNCTION_ARGS);
+Datum rsa_get_details(PG_FUNCTION_ARGS);
 
 // digital certificates
 Datum x509_in(PG_FUNCTION_ARGS);
 Datum x509_out(PG_FUNCTION_ARGS);
-Datum x509_receive(PG_FUNCTION_ARGS);
-Datum x509_send(PG_FUNCTION_ARGS);
 
 // PKCS12 keystores
 Datum pkcs12_in(PG_FUNCTION_ARGS);
 Datum pkcs12_out(PG_FUNCTION_ARGS);
-Datum pkcs12_receive(PG_FUNCTION_ARGS);
-Datum pkcs12_send(PG_FUNCTION_ARGS);
 
 // PKCS8 keystores
 Datum pkcs8_in(PG_FUNCTION_ARGS);
 Datum pkcs8_out(PG_FUNCTION_ARGS);
-Datum pkcs8_receive(PG_FUNCTION_ARGS);
-Datum pkcs8_send(PG_FUNCTION_ARGS);
 
 // PKCS7 keystores
 Datum pkcs7_in(PG_FUNCTION_ARGS);
 Datum pkcs7_out(PG_FUNCTION_ARGS);
-Datum pkcs7_receive(PG_FUNCTION_ARGS);
-Datum pkcs7_send(PG_FUNCTION_ARGS);
 
 text *toHex(const unsigned char *data, size_t len);
 

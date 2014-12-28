@@ -1,5 +1,6 @@
 #include "postgres.h"
 #include "fmgr.h"
+#include <postgresql/internal/c.h>
 #include <openssl/ssl.h>
 #include <openssl/sha.h>
 

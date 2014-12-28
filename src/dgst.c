@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "postgres.h"
 #include "fmgr.h"
+#include <postgresql/internal/c.h>
 #include <openssl/evp.h>
 
 #include "pgopenssltypes.h"
