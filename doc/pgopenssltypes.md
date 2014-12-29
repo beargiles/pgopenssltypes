@@ -22,13 +22,15 @@ to the internal OpenSSL types.
 
 + X509: digital certificate [RFC 5280](https://tools.ietf.org/html/rfc5280)
 
-+ PKCS7: digital certificate [RFC 2315](https://tools.ietf.org/html/rfc2315)
++ PKCS7: cryptographic messages [RFC 2315](https://tools.ietf.org/html/rfc2315)
+
++ PKCS8: private certificate keypairs [RFC 5280](https://tools.ietf.org/html/rfc5280)
 
 Several additional types are supported but deprecated since the keys must
 be stored unencrypted. This should not be a problem since there is support
 for encrypted keypair storage.
 
-+ RSA: RSA keypair
++ RSA: RSA keypair (PKCS1) [RFC 3447](https://tools.ietf.org/html/rfc3447)
 
 + DSA: DSA keypair
 
@@ -36,7 +38,7 @@ for encrypted keypair storage.
 
 Finally several obscure types used by certificate authorities are supported.
 
-+ X509_REQ: digital certificate request
++ X509_REQ: digital certificate request (PKCS10) [RFC 2986](https://tools.ietf.org/html/rfc2986)
 
 + X509_CRL: digital certificate revocation list [RFC 5280](https://tools.ietf.org/html/rfc5280)
 
