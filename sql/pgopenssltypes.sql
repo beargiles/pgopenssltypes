@@ -68,6 +68,26 @@ AS 'pgopenssltypes', 'dgst_whirlpool'
 LANGUAGE C IMMUTABLE STRICT;
 
 -- ----------------------------------------
+-- Wrapper for big numbers
+-- ----------------------------------------
+CREATE TYPE BN;
+
+CREATE OR REPLACE FUNCTION bn_in(cstring)
+RETURNS BN
+AS 'pgopenssltypes', 'bn_in'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION bn_out(BN)
+RETURNS CSTRING
+AS 'pgopenssltypes', 'bn_out'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE TYPE BN (
+    INPUT   = bn_in,
+    OUTPUT  = bn_out
+);
+
+-- ----------------------------------------
 -- Wrapper for private keypairs
 -- ----------------------------------------
 CREATE TYPE PKEY;
@@ -82,24 +102,22 @@ RETURNS CSTRING
 AS 'pgopenssltypes', 'pkey_out'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION pkey_receive(internal)
-RETURNS PKEY
-AS 'pgopenssltypes', 'pkey_receive'
-LANGUAGE C IMMUTABLE STRICT;
+-- CREATE OR REPLACE FUNCTION pkey_receive(internal)
+-- RETURNS PKEY
+-- AS 'pgopenssltypes', 'pkey_receive'
+-- LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION pkey_send(PKEY)
-RETURNS bytea
-AS 'pgopenssltypes', 'pkey_send'
-LANGUAGE C IMMUTABLE STRICT;
+-- CREATE OR REPLACE FUNCTION pkey_send(PKEY)
+-- RETURNS bytea
+-- AS 'pgopenssltypes', 'pkey_send'
+-- LANGUAGE C IMMUTABLE STRICT;
 
 --
 -- Redefine type with necessary functions.
 --
 CREATE TYPE PKEY (
     INPUT   = pkey_in,
-    OUTPUT  = pkey_out,
-    RECEIVE = pkey_receive,
-    SEND    = pkey_send
+    OUTPUT  = pkey_out
 );
 
 -- ----------------------------------------
@@ -115,16 +133,6 @@ LANGUAGE C IMMUTABLE STRICT;
 CREATE OR REPLACE FUNCTION rsa_out(RSA)
 RETURNS CSTRING
 AS 'pgopenssltypes', 'rsa_out'
-LANGUAGE C IMMUTABLE STRICT;
-
-CREATE OR REPLACE FUNCTION rsa_receive(internal)
-RETURNS RSA
-AS 'pgopenssltypes', 'rsa_receive'
-LANGUAGE C IMMUTABLE STRICT;
-
-CREATE OR REPLACE FUNCTION rsa_send(RSA)
-RETURNS bytea
-AS 'pgopenssltypes', 'rsa_send'
 LANGUAGE C IMMUTABLE STRICT;
 
 -- CREATE OR REPLACE FUNCTION rsa_modulus(RSA)
@@ -152,9 +160,50 @@ LANGUAGE C IMMUTABLE STRICT;
 --
 CREATE TYPE RSA (
     INPUT   = rsa_in,
-    OUTPUT  = rsa_out,
-    RECEIVE = rsa_receive,
-    SEND    = rsa_send
+    OUTPUT  = rsa_out
+);
+
+-- ----------------------------------------
+-- Wrapper for DSA keys and parameters
+-- ----------------------------------------
+CREATE TYPE DSA;
+
+CREATE OR REPLACE FUNCTION dsa_in(cstring)
+RETURNS DSA
+AS 'pgopenssltypes', 'dsa_in'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION dsa_out(DSA)
+RETURNS CSTRING
+AS 'pgopenssltypes', 'dsa_out'
+LANGUAGE C IMMUTABLE STRICT;
+
+--
+-- Redefine type with necessary functions.
+--
+CREATE TYPE DSA (
+    INPUT   = dsa_in,
+    OUTPUT  = dsa_out
+);
+
+CREATE TYPE DSA_PARAMS;
+
+CREATE OR REPLACE FUNCTION dsa_params_in(cstring)
+RETURNS DSA_PARAM
+AS 'pgopenssltypes', 'dsa_params_in'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION dsa_parms_out(DSA_PARAM)
+RETURNS CSTRING
+AS 'pgopenssltypes', 'dsa_params_out'
+LANGUAGE C IMMUTABLE STRICT;
+
+--
+-- Redefine type with necessary functions.
+--
+CREATE TYPE DSA_PARAMS (
+    INPUT   = dsa_params_in,
+    OUTPUT  = dsa_params_out
 );
 
 -- ----------------------------------------
@@ -172,21 +221,9 @@ RETURNS CSTRING
 AS 'pgopenssltypes', 'x509_out'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION x509_receive(internal)
-RETURNS X509
-AS 'pgopenssltypes', 'x509_receive'
-LANGUAGE C IMMUTABLE STRICT;
-
-CREATE OR REPLACE FUNCTION x509_send(X509)
-RETURNS bytea
-AS 'pgopenssltypes', 'x509_send'
-LANGUAGE C IMMUTABLE STRICT;
-
 CREATE TYPE X509 (
     INPUT   = x509_in,
-    OUTPUT  = x509_out,
-    RECEIVE = x509_receive,
-    SEND    = x509_send
+    OUTPUT  = x509_out
 );
 
 -- ----------------------------------------
@@ -204,21 +241,9 @@ RETURNS CSTRING
 AS 'pgopenssltypes', 'pkcs12_out'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION pkcs12_receive(internal)
-RETURNS PKCS12
-AS 'pgopenssltypes', 'pkcs12_receive'
-LANGUAGE C IMMUTABLE STRICT;
-
-CREATE OR REPLACE FUNCTION pkcs12_send(PKCS12)
-RETURNS bytea
-AS 'pgopenssltypes', 'pkcs12_send'
-LANGUAGE C IMMUTABLE STRICT;
-
 CREATE TYPE PKCS12 (
     INPUT   = pkcs12_in,
-    OUTPUT  = pkcs12_out,
-    RECEIVE = pkcs12_receive,
-    SEND    = pkcs12_send
+    OUTPUT  = pkcs12_out
 );
 
 -- ----------------------------------------
@@ -236,21 +261,9 @@ RETURNS CSTRING
 AS 'pgopenssltypes', 'pkcs8_out'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION pkcs8_receive(internal)
-RETURNS PKCS8
-AS 'pgopenssltypes', 'pkcs8_receive'
-LANGUAGE C IMMUTABLE STRICT;
-
-CREATE OR REPLACE FUNCTION pkcs8_send(PKCS8)
-RETURNS bytea
-AS 'pgopenssltypes', 'pkcs8_send'
-LANGUAGE C IMMUTABLE STRICT;
-
 CREATE TYPE PKCS8 (
     INPUT   = pkcs8_in,
-    OUTPUT  = pkcs8_out,
-    RECEIVE = pkcs8_receive,
-    SEND    = pkcs8_send
+    OUTPUT  = pkcs8_out
 );
 
 -- ----------------------------------------
@@ -268,21 +281,9 @@ RETURNS CSTRING
 AS 'pgopenssltypes', 'pkcs7_out'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION pkcs7_receive(internal)
-RETURNS PKCS7
-AS 'pgopenssltypes', 'pkcs7_receive'
-LANGUAGE C IMMUTABLE STRICT;
-
-CREATE OR REPLACE FUNCTION pkcs7_send(PKCS7)
-RETURNS bytea
-AS 'pgopenssltypes', 'pkcs7_send'
-LANGUAGE C IMMUTABLE STRICT;
-
 CREATE TYPE PKCS7 (
     INPUT   = pkcs7_in,
-    OUTPUT  = pkcs7_out,
-    RECEIVE = pkcs7_receive,
-    SEND    = pkcs7_send
+    OUTPUT  = pkcs7_out
 );
 
 -- ----------------------------------------
@@ -300,21 +301,9 @@ RETURNS CSTRING
 AS 'pgopenssltypes', 'x509req_out'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION x509req_receive(internal)
-RETURNS X509REQ
-AS 'pgopenssltypes', 'x509req_receive'
-LANGUAGE C IMMUTABLE STRICT;
-
-CREATE OR REPLACE FUNCTION x509req_send(X509REQ)
-RETURNS bytea
-AS 'pgopenssltypes', 'x509req_send'
-LANGUAGE C IMMUTABLE STRICT;
-
 CREATE TYPE X509REQ (
     INPUT   = x509req_in,
-    OUTPUT  = x509req_out,
-    RECEIVE = x509req_receive,
-    SEND    = x509req_send
+    OUTPUT  = x509req_out
 );
 
 -- ----------------------------------------
