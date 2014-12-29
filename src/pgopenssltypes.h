@@ -48,6 +48,10 @@ Datum dsa_params_out(PG_FUNCTION_ARGS);
 Datum x509_in(PG_FUNCTION_ARGS);
 Datum x509_out(PG_FUNCTION_ARGS);
 
+// digital certificate requests
+Datum x509_req_in(PG_FUNCTION_ARGS);
+Datum x509_req_out(PG_FUNCTION_ARGS);
+
 // PKCS12 keystores
 Datum pkcs12_in(PG_FUNCTION_ARGS);
 Datum pkcs12_out(PG_FUNCTION_ARGS);

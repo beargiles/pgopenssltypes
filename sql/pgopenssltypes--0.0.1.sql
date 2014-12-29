@@ -227,6 +227,26 @@ CREATE TYPE X509 (
 );
 
 -- ----------------------------------------
+-- Wrapper for X509 digital certificate requests
+-- ----------------------------------------
+CREATE TYPE X509_REQ;
+
+CREATE OR REPLACE FUNCTION x509_req_in(cstring)
+RETURNS X509_REQ
+AS 'pgopenssltypes', 'x509_req_in'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION x509_req_out(X509_REQ)
+RETURNS CSTRING
+AS 'pgopenssltypes', 'x509_req_out'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE TYPE X509_REQ (
+    INPUT   = x509_req_in,
+    OUTPUT  = x509_req_out
+);
+
+-- ----------------------------------------
 -- Wrapper for PKCS12 key stores
 -- ----------------------------------------
 CREATE TYPE PKCS12;
@@ -284,26 +304,6 @@ LANGUAGE C IMMUTABLE STRICT;
 CREATE TYPE PKCS7 (
     INPUT   = pkcs7_in,
     OUTPUT  = pkcs7_out
-);
-
--- ----------------------------------------
--- Wrapper for X509 digital certificate requests
--- ----------------------------------------
-CREATE TYPE X509REQ;
-
-CREATE OR REPLACE FUNCTION x509req_in(cstring)
-RETURNS X509REQ
-AS 'pgopenssltypes', 'x509req_in'
-LANGUAGE C IMMUTABLE STRICT;
-
-CREATE OR REPLACE FUNCTION x509req_out(X509REQ)
-RETURNS CSTRING
-AS 'pgopenssltypes', 'x509req_out'
-LANGUAGE C IMMUTABLE STRICT;
-
-CREATE TYPE X509REQ (
-    INPUT   = x509req_in,
-    OUTPUT  = x509req_out
 );
 
 -- ----------------------------------------
