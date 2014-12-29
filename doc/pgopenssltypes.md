@@ -20,7 +20,9 @@ Certificate Authority.
 This extension creates PostgreSQL user defined types (UDT) that correspond
 to the internal OpenSSL types.
 
-+ X509: digital certificate
++ X509: digital certificate [RFC 5280](https://tools.ietf.org/html/rfc5280)
+
++ PKCS7: digital certificate [RFC 2315](https://tools.ietf.org/html/rfc2315)
 
 Several additional types are supported but deprecated since the keys must
 be stored unencrypted. This should not be a problem since there is support
@@ -36,7 +38,7 @@ Finally several obscure types used by certificate authorities are supported.
 
 + X509_REQ: digital certificate request
 
-+ X509_CRL: digital certificate revocation list
++ X509_CRL: digital certificate revocation list [RFC 5280](https://tools.ietf.org/html/rfc5280)
 
 Usage
 -----
