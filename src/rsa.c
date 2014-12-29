@@ -29,9 +29,9 @@ static RSA * rsa_generate_keypair_internal(int bits);
 /*
  * Read PEM format.
  */
-PG_FUNCTION_INFO_V1( rsa_in);
+PG_FUNCTION_INFO_V1(rsa_in);
 
-Datum rsa_in( PG_FUNCTION_ARGS) {
+Datum rsa_in(PG_FUNCTION_ARGS) {
 	char *txt;
 	bytea *result;
 	RSA *rsa;
@@ -54,9 +54,9 @@ Datum rsa_in( PG_FUNCTION_ARGS) {
 /*
  * Write PEM format.
  */
-PG_FUNCTION_INFO_V1( rsa_out);
+PG_FUNCTION_INFO_V1(rsa_out);
 
-Datum rsa_out( PG_FUNCTION_ARGS) {
+Datum rsa_out(PG_FUNCTION_ARGS) {
 	bytea *raw;
 	char *result;
 	RSA *rsa;
@@ -78,9 +78,9 @@ Datum rsa_out( PG_FUNCTION_ARGS) {
 /**
  * Generate a random keypair
  */
-PG_FUNCTION_INFO_V1( rsa_generate_keypair);
+PG_FUNCTION_INFO_V1(rsa_generate_keypair);
 
-Datum rsa_generate_keypair( PG_FUNCTION_ARGS) {
+Datum rsa_generate_keypair(PG_FUNCTION_ARGS) {
 	bytea *result;
 	int bits;
 	RSA *rsa;
@@ -107,9 +107,9 @@ Datum rsa_generate_keypair( PG_FUNCTION_ARGS) {
 /**
  * Get details about an RSA keypair
  */
-PG_FUNCTION_INFO_V1( rsa_get_details);
+PG_FUNCTION_INFO_V1(rsa_get_details);
 
-Datum rsa_get_details( PG_FUNCTION_ARGS) {
+Datum rsa_get_details(PG_FUNCTION_ARGS) {
 	bytea *raw;
 	RSA *rsa;
 	TupleDesc desc;
@@ -249,7 +249,7 @@ static char * rsa_to_string(const RSA *rsa) {
 	PEM_write_bio_RSAPrivateKey(bio, (RSA *) rsa, NULL, NULL, 0, NULL,
 	NULL);
 
-	// create bytea results.
+	// create results.
 	len = BIO_number_written(bio);
 	BIO_get_mem_data(bio, &ptr);
 	result = palloc(len + 1);

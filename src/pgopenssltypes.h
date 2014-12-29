@@ -37,6 +37,13 @@ Datum rsa_out(PG_FUNCTION_ARGS);
 Datum rsa_generate_keypair(PG_FUNCTION_ARGS);
 Datum rsa_get_details(PG_FUNCTION_ARGS);
 
+// DSA keys and parameters
+Datum dsa_in(PG_FUNCTION_ARGS);
+Datum dsa_out(PG_FUNCTION_ARGS);
+
+Datum dsa_params_in(PG_FUNCTION_ARGS);
+Datum dsa_params_out(PG_FUNCTION_ARGS);
+
 // digital certificates
 Datum x509_in(PG_FUNCTION_ARGS);
 Datum x509_out(PG_FUNCTION_ARGS);
