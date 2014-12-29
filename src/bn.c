@@ -6,7 +6,6 @@
 
 #include "pgopenssltypes.h"
 
-static bytea * bn_to_bytea(BIGNUM *bn);
 static char * bn_to_string(BIGNUM *bn, char ch);
 
 /*
@@ -72,7 +71,7 @@ Datum bn_out(PG_FUNCTION_ARGS) {
 /*
  * Convert BIGNUM to bytea.
  */
-static bytea * bn_to_bytea(BIGNUM *bn) {
+bytea * bn_to_bytea(BIGNUM *bn) {
 	int len;
 	bytea *result;
 

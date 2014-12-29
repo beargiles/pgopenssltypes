@@ -8,6 +8,16 @@
 
 #include "pgopenssltypes.h"
 
+// X509_CRL_get_version
+// X509_CRL_get_lastUpdate
+// X509_CRL_get_nextUpdate
+// X509_CRL_get_issuer
+// X509_CRL_get_REVOKED
+// X509_CRL_sign(CRL, PKEY, MD*)
+// X509_CRL_sign_ctx(CRL, EVP_MD_CTX)
+// X509_CRL_verify(X509_CRL *, EVP_PKEY *)
+// X509_CRL_digest
+
 /*
  * Wrappers for OpenSSL 'x509_crl' functions.
  */

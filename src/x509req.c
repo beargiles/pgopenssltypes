@@ -8,6 +8,13 @@
 
 #include "pgopenssltypes.h"
 
+// X509_REQ_get_version
+// X509_REQ_get_subject_name
+// X509_REQ_extract_key
+// X509_REQ_sign(REQ, PKEY, md)
+// X509_REQ_sign_ctx(REQ, EVP_MD_CTX)
+// X509_REQ_verify(X509_REQ *, EVP_PKEY *)
+
 /*
  * Wrappers for OpenSSL 'x509_req' functions.
  */

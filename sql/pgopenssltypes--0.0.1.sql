@@ -207,6 +207,26 @@ CREATE TYPE DSA_PARAMS (
 );
 
 -- ----------------------------------------
+-- Wrapper for X509 digital certificate subject and issuer names.
+-- ----------------------------------------
+CREATE TYPE X509_NAME;
+
+CREATE OR REPLACE FUNCTION x509_NAME_in(cstring)
+RETURNS X509_NAME
+AS 'pgopenssltypes', 'x509_name_in'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION x509_NAME_out(X509_NAME)
+RETURNS CSTRING
+AS 'pgopenssltypes', 'x509_name_out'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE TYPE X509_NAME (
+    INPUT   = x509_name_in,
+    OUTPUT  = x509_name_out
+);
+
+-- ----------------------------------------
 -- Wrapper for X509 digital certificates
 -- ----------------------------------------
 CREATE TYPE X509;
@@ -225,6 +245,109 @@ CREATE TYPE X509 (
     INPUT   = x509_in,
     OUTPUT  = x509_out
 );
+
+--
+-- Get certificate version number. Should always be 3.
+--
+CREATE OR REPLACE FUNCTION x509_get_version(X509)
+RETURNS INT4
+AS 'pgopenssltypes', 'x509_get_version'
+LANGUAGE C IMMUTABLE STRICT;
+
+--
+-- Get certificate serial number.
+CREATE OR REPLACE FUNCTION x509_get_serial_number(X509)
+RETURNS BN
+AS 'pgopenssltypes', 'x509_get_serial_number'
+LANGUAGE C IMMUTABLE STRICT;
+
+--
+-- Get earliest date certificate is not valid.
+--
+CREATE OR REPLACE FUNCTION x509_get_not_before(X509)
+RETURNS TIMESTAMP WITH TIME ZONE
+AS 'pgopenssltypes', 'x509_get_not_before'
+LANGUAGE C IMMUTABLE STRICT;
+
+--
+-- Get last date certificate is valid.
+--
+CREATE OR REPLACE FUNCTION x509_get_not_after(X509)
+RETURNS TIMESTAMP WITH TIME ZONE
+AS 'pgopenssltypes', 'x509_get_not_after'
+LANGUAGE C IMMUTABLE STRICT;
+
+--
+-- Get subject name.
+--
+CREATE OR REPLACE FUNCTION x509_get_subject_name(X509)
+RETURNS X509_NAME
+AS 'pgopenssltypes', 'x509_get_subject_name'
+LANGUAGE C IMMUTABLE STRICT;
+
+--
+-- Get issuer name.
+--
+CREATE OR REPLACE FUNCTION x509_get_issuer_name(X509)
+RETURNS X509_NAME
+AS 'pgopenssltypes', 'x509_get_issuer_name'
+LANGUAGE C IMMUTABLE STRICT;
+
+--
+-- Get public key.
+--
+CREATE OR REPLACE FUNCTION x509_get_public_key(X509)
+RETURNS PKEY
+AS 'pgopenssltypes', 'x509_get_public_key'
+LANGUAGE C IMMUTABLE STRICT;
+
+--
+-- Verify that the private key matches the certificate
+--
+CREATE OR REPLACE FUNCTION x509_check_private_key(X509, PKEY)
+RETURNS BOOLEAN
+AS 'pgopenssltypes', 'x509_check_private_key'
+LANGUAGE C IMMUTABLE STRICT;
+
+--
+-- Get certificate alias.
+--
+CREATE OR REPLACE FUNCTION x509_get_alias(X509)
+RETURNS CSTRING
+AS 'pgopenssltypes', 'x509_get_alias'
+LANGUAGE C IMMUTABLE STRICT;
+
+--
+-- Get the issuer and serial number hash. This is used in searches.
+--
+CREATE OR REPLACE FUNCTION x509_get_iands_hash(X509)
+RETURNS BN
+AS 'pgopenssltypes', 'x509_get_iands_hash'
+LANGUAGE C IMMUTABLE STRICT;
+
+--
+-- Get subject name hash. This is used in searches.
+--
+CREATE OR REPLACE FUNCTION x509_get_subject_name_hash(X509)
+RETURNS BN
+AS 'pgopenssltypes', 'x509_get_subject_name_hash'
+LANGUAGE C IMMUTABLE STRICT;
+
+--
+-- Get issuer name hash. This is used in searches.
+--
+CREATE OR REPLACE FUNCTION x509_get_issuer_name_hash(X509)
+RETURNS BN
+AS 'pgopenssltypes', 'x509_get_issuer_name_hash'
+LANGUAGE C IMMUTABLE STRICT;
+
+--
+-- Get keyid (hash). This is used in searches.
+--
+CREATE OR REPLACE FUNCTION x509_get_keyid(X509)
+RETURNS BN
+AS 'pgopenssltypes', 'x509_get_keyid'
+LANGUAGE C IMMUTABLE STRICT;
 
 -- ----------------------------------------
 -- Wrapper for PKCS12 key stores
