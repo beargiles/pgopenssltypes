@@ -24,6 +24,9 @@ private keys and digital certificates.
 
 + X509: digital certificate [RFC 5280](https://tools.ietf.org/html/rfc5280)
 
++ X509_NAME: subject and issuer names. These are a collection of
+key-value pairs. (partially implemented)
+
 + PKCS12: keystore. Not currently implemented. [RFC 7292](https://tools.ietf.org/html/rfc7292). This is the only type that is not accessed as a PEM text value.
 
 + PKCS8: keystore for private certificate keypairs [RFC 5280](https://tools.ietf.org/html/rfc5280)
@@ -79,6 +82,62 @@ string).
 + dgst_SHA512
 + dgst_ripend160
 + dgst_whirlpool
+
+#### X509v3 Digital Certificates
+
+A large number of accessor functions have been created for X509 Digital
+Certificates. This allows us to write database triggers that ensure data
+consistency.
+
+If we have a table containing certs and search fields, e.g.,
+
+```
+CREATE TABLE certs (
+   cert       X509 NOT NULL,
+   name       VARCHAR[100] NOT NULL,
+   not_before TIMESTAMP NOT NULL,
+   not_after  TIMESTAMP NOT NULL
+);
+```
+
+we will be able to create triggers on insertion and modification
+
+```
+CREATE CONSTRAINT TRIGGER cert_update() BEFORE INSERT OR UPDATE
+   ON certs NOT DEFERRABLE FOR EACH ROW
+   EXECUTE PROCEDURE cert_update_proc();
+  
+CREATE OR REPLACE FUNCTION cert_update_proc RETURNING trigger $$
+   BEGIN
+       INSERT INTO certs(cert,
+           X509_get_subject_name(cert),
+           X509_get_not_before(cert),
+           X509_get_not_after(cert));
+       RETURN NEW;
+   END;
+$$ LANGUAGE plpgsql;
+```
+
+This ensures that the cached values 1) contain the correct information
+and 2) will always reflect what is in the digital certificate.
+
+The accessor functions are
+
++ X509_get_version
++ X509_get_serial_number
++ X509_get_not_before
++ X509_get_not_after
++ X509_get_subject_name
++ X509_get_issuer_name
++ X509_get_public_key
++ X509_get_alias
++ X509_get_iands_hash
++ X509_get_subject_name_hash
++ X509_get_issuer_name_hash
++ X509_get_keyid
+
+There is also a function to verify that a digital certificate and private key match (`x509_check_private_key`).
+
 
 Support
 -------
