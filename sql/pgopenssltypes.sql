@@ -189,11 +189,11 @@ CREATE TYPE DSA (
 CREATE TYPE DSA_PARAMS;
 
 CREATE OR REPLACE FUNCTION dsa_params_in(cstring)
-RETURNS DSA_PARAM
+RETURNS DSA_PARAMS
 AS 'pgopenssltypes', 'dsa_params_in'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION dsa_parms_out(DSA_PARAM)
+CREATE OR REPLACE FUNCTION dsa_params_out(DSA_PARAMS)
 RETURNS CSTRING
 AS 'pgopenssltypes', 'dsa_params_out'
 LANGUAGE C IMMUTABLE STRICT;
@@ -289,21 +289,41 @@ CREATE TYPE PKCS7 (
 -- ----------------------------------------
 -- Wrapper for X509 digital certificate requests
 -- ----------------------------------------
-CREATE TYPE X509REQ;
+CREATE TYPE X509_REQ;
 
-CREATE OR REPLACE FUNCTION x509req_in(cstring)
-RETURNS X509REQ
-AS 'pgopenssltypes', 'x509req_in'
+CREATE OR REPLACE FUNCTION x509_REQ_in(cstring)
+RETURNS X509_REQ
+AS 'pgopenssltypes', 'x509_req_in'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE OR REPLACE FUNCTION x509req_out(X509REQ)
+CREATE OR REPLACE FUNCTION x509_REQ_out(X509_REQ)
 RETURNS CSTRING
-AS 'pgopenssltypes', 'x509req_out'
+AS 'pgopenssltypes', 'x509_req_out'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE TYPE X509REQ (
-    INPUT   = x509req_in,
-    OUTPUT  = x509req_out
+CREATE TYPE X509_REQ (
+    INPUT   = x509_req_in,
+    OUTPUT  = x509_req_out
+);
+
+-- ----------------------------------------
+-- Wrapper for X509 digital certificate revocation list
+-- ----------------------------------------
+CREATE TYPE X509_CRL;
+
+CREATE OR REPLACE FUNCTION x509_CRL_in(cstring)
+RETURNS X509_CRL
+AS 'pgopenssltypes', 'x509_crl_in'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE OR REPLACE FUNCTION x509_CRL_out(X509_CRL)
+RETURNS CSTRING
+AS 'pgopenssltypes', 'x509_crl_out'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE TYPE X509_CRL (
+    INPUT   = x509_crl_in,
+    OUTPUT  = x509_crl_out
 );
 
 -- ----------------------------------------
